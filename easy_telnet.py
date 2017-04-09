@@ -9,6 +9,7 @@ No need to install additional programs (besides Python itself).
 import telnetlib
 import time
 import sys
+import msvcrt
 
 
 __author__ = "Rob Braggaar"
@@ -35,18 +36,17 @@ print username
 tel.write(username + "\r\n")
 print tel.read_until("Password: ", timeout=TO)
 print ''
-time.sleep(0.5)
 tel.write(password + "\r\n")
 print tel.read_until(">>> ", timeout=TO).strip('>>> ')
-time.sleep(0.5)
 
 # receive commands from the user as input
 # send and execute commands to the pycom device and return the result
 while True:
+    indent = '    '
     cmd = raw_input('>>> ')
+    if len(cmd) > 1:
+        while cmd[-1] == ':':
+            cmd += '\n' + indent + raw_input('... ' + indent)
+            indent += '    '
     tel.write(cmd + '\r\n')
-    time.sleep(0.2)
-    print (tel.read_until(">>> ", timeout=TO).strip('>>> ' + cmd).strip('\r\n'))
-
-
-
+    print (tel.read_until(">>> ", timeout=1).strip('>>> ' + cmd).strip('\r\n'))
