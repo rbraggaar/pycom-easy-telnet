@@ -36,7 +36,9 @@ print username
 tel.write(username + "\r\n")
 print tel.read_until("Password: ", timeout=TO)
 print ''
+time.sleep(1)
 tel.write(password + "\r\n")
+time.sleep(.5)
 print tel.read_until(">>> ", timeout=TO).strip('>>> ')
 
 # receive commands from the user as input
@@ -49,4 +51,5 @@ while True:
             cmd += '\n' + indent + raw_input('... ' + indent)
             indent += '    '
     tel.write(cmd + '\r\n')
+    time.sleep(.5)
     print (tel.read_until(">>> ", timeout=1).strip('>>> ' + cmd).strip('\r\n'))
